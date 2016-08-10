@@ -10,6 +10,9 @@
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
 set $mod Mod4
+set $browser vivaldi-snapshot --disk-cache-dir=/tmp/vivaldi-snapshot-cache
+set $calculator gnome-calculator
+set $mail thunderbird
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -37,11 +40,17 @@ exec --no-startup-id nm-applet &
 
 exec --no-startup-id redshift-gtk &
 
-exec --no-startup-id feh --bg-scale  Dropbox/Pictures/Backgrounds/wallpaper6.jpg &
+exec --no-startup-id feh --bg-scale  $HOME/Dropbox/Pictures/Backgrounds/wallpaper6.jpg &
 
 #exec --no-startup-id $HOME/.dropbox-dist/dropboxd & 
 
 exec --no-startup-id /usr/bin/numlockx on &
+
+# lock screen
+bindsym $mod+i exec i3lock --image $HOME/Dropbox/Pictures/Backgrounds/wallpaper6S.png 
+
+# Turn off screen
+bindsym $mod+y exec sleep 1 && xset dpms force off
 
 # start a terminal
 bindsym $mod+Return exec konsole
@@ -134,15 +143,32 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 1 +5% #i
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 1 -5% #decrease sound volume
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 1 toggle # mute sound
 
-bindsym XF86AudioPlay exec cmus-remote --pause
-bindsym XF86AudioStop exec cmus-remote --stop
-bindsym XF86AudioNext exec cmus-remote --next
-bindsym XF86AudioPrev exec cmus-remote --prev
+# Cmus control with multimedia keys
+bindsym XF86AudioPlay exec --no-startup-id cmus-remote --pause
+bindsym XF86AudioStop exec --no-startup-id cmus-remote --stop
+bindsym XF86AudioNext exec --no-startup-id cmus-remote --next
+bindsym XF86AudioPrev exec --no-startup-id cmus-remote --prev
+
+# XF86TouchpadToggle
+bindsym XF86TouchpadToggle exec /usr/local/bin/touchpadToggle.sh
+# Touchpad enable/disable
+#bindsym $mod+Shift+t exec xinput --disable "ETPS/2 Elantech Touchpad"
+#bindsym $mod+t exec xinput --enable "ETPS/2 Elantech Touchpad"
+
+# Miscellaneous laptop keys
+bindsym XF86WWW exec  $browser --new-window
+bindsym XF86Calculator exec $calculator
+bindsym XF86Mail exec $mail
+
+# Laptop screen turn off code
+#bindcode 253 exec i3lock
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
+
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
+
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
@@ -173,13 +199,15 @@ mode "resize" {
 # Application launch mode
 mode "launch" {
 	
-	bindsym w exec vivaldi-snapshot --new-window
-	bindsym c exec gnome-calculator
+	bindsym w exec $browser --new-window; mode "default"
+	bindsym c exec $calculator; mode "default"
+	bindsym s exec steam; mode "default"
 	
         bindsym Return mode "default"
         bindsym Escape mode "default"
 }
 
+# Mode switch controls
 bindsym $mod+r mode "resize"
 bindsym $mod+q mode "launch"
 
@@ -189,6 +217,7 @@ mouse_warping none
 
 new_window pixel 1
 hide_edge_borders both
+
 # Window specific configurations
 for_window [instance=gnome-calculator] sticky enable
 
@@ -196,7 +225,7 @@ for_window [instance=gnome-calculator] sticky enable
 # finds out, if available)
 bar {
         status_command i3status
-	font pango:DejaVu Sans Mono 9
+	font pango:DejaVu Sans Mono 10
 	mode hide
    	hidden_state hide
     	modifier none
