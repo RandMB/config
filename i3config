@@ -13,19 +13,12 @@ set $mail thunderbird
 font pango:DejaVu Sans Mono 8
 
 
-# Auto start
-exec --no-startup-id compton --backend glx --vsync opengl-swc --unredir-if-possible -b
-exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
-exec --no-startup-id nm-applet &
-exec --no-startup-id redshift-gtk &
-exec --no-startup-id feh --bg-scale  $HOME/Dropbox/Pictures/Backgrounds/wallpaper6.jpg &
-exec --no-startup-id /usr/bin/numlockx on &
 
 # Turn off screen
-bindsym $mod+y exec sleep 1 && xset dpms force off
+bindsym $mod+y exec  --no-startup-id sleep 1 && xset dpms force off
 
 # start a terminal
-bindsym $mod+Return exec konsole
+bindsym $mod+Return exec  --no-startup-id konsole
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -122,12 +115,12 @@ bindsym XF86AudioNext exec --no-startup-id cmus-remote --next
 bindsym XF86AudioPrev exec --no-startup-id cmus-remote --prev
 
 # Touchpad enable/disable
-bindsym XF86TouchpadToggle exec /usr/local/bin/touchpadToggle.sh
+bindsym XF86TouchpadToggle exec --no-startup-id /usr/local/bin/touchpadToggle.sh
 
 # Miscellaneous laptop keys
-bindsym XF86WWW exec  $browser --new-window
-bindsym XF86Calculator exec $calculator
-bindsym XF86Mail exec $mail
+bindsym XF86WWW exec --no-startup-id  $browser --new-window
+bindsym XF86Calculator exec --no-startup-id $calculator
+bindsym XF86Mail exec --no-startup-id $mail
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -156,9 +149,11 @@ mode "resize" {
 # Application launch mode
 mode "launch" {
 	
-	bindsym w exec $browser --new-window; mode "default"
-	bindsym c exec $calculator; mode "default"
-	bindsym s exec steam; mode "default"
+	bindsym w exec --no-startup-id $browser --new-window; mode "default"
+	bindsym c exec --no-startup-id $calculator; mode "default"
+	bindsym s exec --no-startup-id steam; mode "default"
+	bindsym d exec --no-startup-id dropbox; mode "default"
+	bindsym Shift+d exec --no-startup-id killall dropbox; mode "default"
 	
         bindsym Return mode "default"
         bindsym Escape mode "default"
@@ -167,10 +162,11 @@ mode "launch" {
 # System control mode
 mode "control" {
 	bindsym s exec systemctl poweroff
-	bindsym h exec systemctl hibernate
-	## TODO: set a background or use something fancier
-	bindsym l exec i3lock; mode "default"
-	bindsym e exit
+	# Lock the screen
+	bindsym l exec --no-startup-id i3lock-fancy -f Comic-Sans-MS ; mode "default"	
+	# Lock the screen and turn it off
+	bindsym Shift+l exec --no-startup-id i3lock-fancy -f Comic-Sans-MS && sleep 1 && xset dpms force off; mode "default"
+	bindsym e exit 
 		
 
         bindsym Return mode "default"
@@ -189,7 +185,7 @@ focus_follows_mouse no
 # Don't "teleport" mouse when switching outputs
 mouse_warping none
 
-# Use 1 pixel borders and happens to disable titlebars
+# Use 1 pixel borders and this  happens to disable titlebars
 new_window pixel 1
 hide_edge_borders both
 
@@ -198,18 +194,28 @@ for_window [instance=gnome-calculator] sticky enable
 
 # The bar
 bar {
-	font pango:DejaVu Sans Mono 10
+	font pango:Liberation Sans 10
 
 	# Fancier colors
 	colors {
-		separator #268bd2
-		background #002b36
-		statusline #839496
-		focused_workspace #fdf6e3 #6c71c4 #fdf6e3
-		active_workspace #fdf6e3 #6c71c4 #fdf6e3
-		inactive_workspace #002b36 #586e75 #002b36
-		urgent_workspace #d33682 #d33682 #fdf6e3
+		background #24364F
+            	statusline #CCCCCC
+
+            	focused_workspace  #ffffff #285577
+            	active_workspace   #cccccc #333333
+            	inactive_workspace #333333 #222222
+            	urgent_workspace   #ffffff #900000
+		#separator #268bd2
+		#background #002b36
+		#statusline #839496
+		#focused_workspace #fdf6e3 #6c71c4 #fdf6e3
+		#active_workspace #fdf6e3 #6c71c4 #fdf6e3
+		#inactive_workspace #002b36 #586e75 #002b36
+		#urgent_workspace #d33682 #d33682 #fdf6e3
 	}
+
+	# Put the bar on the top
+	position top
 	
 	# Didsplay default status
         status_command i3status
@@ -223,3 +229,23 @@ bar {
 
 # Toggle hiding/showing
 bindsym $mod+b bar hidden_state toggle
+
+### Auto start ##
+# The compositor
+exec --no-startup-id compton -b &
+# Polkit agent, required for polkit to work
+exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+# Network icon in bar
+exec --no-startup-id nm-applet &
+# Redshift
+exec --no-startup-id redshift-gtk &
+# Background
+exec --no-startup-id feh --bg-scale  $HOME/Dropbox/Pictures/Backgrounds/wallpaper6.jpg &
+# Make sure numlock is on
+exec --no-startup-id /usr/bin/numlockx on &
+# Assosiate Xorg lock as our desired locker
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock-fancy -f Comic-Sans-MS &
+# Turn off screensaver, otherwise i3lock-fance picks up black screen
+exec --no-startup-id xsest s off &
+
+
