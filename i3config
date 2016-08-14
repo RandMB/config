@@ -8,6 +8,8 @@ set $browser vivaldi-snapshot --disk-cache-dir=/tmp/vivaldi-snapshot-cache
 set $calculator gnome-calculator
 # Used Mail application
 set $mail thunderbird
+# Terminal application
+set $terminal konsole
 
 # Set a font
 font pango:DejaVu Sans Mono 8
@@ -18,13 +20,16 @@ font pango:DejaVu Sans Mono 8
 bindsym $mod+y exec  --no-startup-id sleep 1 && xset dpms force off
 
 # start a terminal
-bindsym $mod+Return exec  --no-startup-id konsole
+bindsym $mod+Return exec  --no-startup-id $terminal
 
 # kill focused window
 bindsym $mod+Shift+q kill
 
 # Pretty much an application search menu
-bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
+bindsym $mod+d exec --no-startup-id rofi -show drun
+
+# Pretty much an application switcher
+bindsym Mod1+Tab exec --no-startup-id rofi -show window
 
 # change focus
 bindsym $mod+j focus left
@@ -122,6 +127,10 @@ bindsym XF86WWW exec --no-startup-id  $browser --new-window
 bindsym XF86Calculator exec --no-startup-id $calculator
 bindsym XF86Mail exec --no-startup-id $mail
 
+# Screenshot
+bindsym Print exec scrot -m -e 'mv $f /home/mantas/Dropbox/Pictures/Screenshots/'
+
+
 # reload the configuration file
 bindsym $mod+Shift+c reload
 
@@ -190,28 +199,28 @@ new_window pixel 1
 hide_edge_borders both
 
 ### Window specific configurations: ###
+# Calculator sticky and floating, no use of tiling it
+for_window [instance=gnome-calculator] floating enable
 for_window [instance=gnome-calculator] sticky enable
+# Picture viewers floating, useless on small screen otherwise
+for_window [class=gwenview] floating enable
+for_window [class=Eog] floating enable
+for_window [class=feh] floating enable
 
 # The bar
 bar {
-	font pango:Liberation Sans 10
+	font pango:Dejavu Sans Mono 10
 
 	# Fancier colors
 	colors {
-		background #24364F
-            	statusline #CCCCCC
+		background #30363b
+      		statusline #eae9da
+      		separator  #eae9ada
 
-            	focused_workspace  #ffffff #285577
-            	active_workspace   #cccccc #333333
-            	inactive_workspace #333333 #222222
-            	urgent_workspace   #ffffff #900000
-		#separator #268bd2
-		#background #002b36
-		#statusline #839496
-		#focused_workspace #fdf6e3 #6c71c4 #fdf6e3
-		#active_workspace #fdf6e3 #6c71c4 #fdf6e3
-		#inactive_workspace #002b36 #586e75 #002b36
-		#urgent_workspace #d33682 #d33682 #fdf6e3
+      		focused_workspace  #30363b #30363b #4e9ab7
+      		active_workspace   #30363b #30363b #4e9ab7
+      		inactive_workspace #30363b #30363b #eae9da
+      		urgent_workspace   #9b6465 #30363b #eae9da
 	}
 
 	# Put the bar on the top
@@ -230,6 +239,9 @@ bar {
 # Toggle hiding/showing
 bindsym $mod+b bar hidden_state toggle
 
+### Layout section ###
+exec --no-startup-id $HOME/Scripts/layout.sh &
+
 ### Auto start ##
 # The compositor
 exec --no-startup-id compton -b &
@@ -245,7 +257,12 @@ exec --no-startup-id feh --bg-scale  $HOME/Dropbox/Pictures/Backgrounds/wallpape
 exec --no-startup-id /usr/bin/numlockx on &
 # Assosiate Xorg lock as our desired locker
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock-fancy -f Comic-Sans-MS &
-# Turn off screensaver, otherwise i3lock-fance picks up black screen
-exec --no-startup-id xsest s off &
+# Turn off screensaver, otherwise i3lock-fancy picks up black screen. Manual locking required
+exec --no-startup-id xset s 0 0 &
+# For removable device mounting
+exec --no-startup-id udiskie --no-automount --no-notify --tray --use-udisks2 &
+# Hide the cursor, as we are in a tiling wm anyway, which is keyboard driven
+exec --no-startup-id unclutter --timeout 10 --jitter 50 --ignore-scrolling -b &
+
 
 
