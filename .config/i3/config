@@ -12,12 +12,10 @@ set $mail thunderbird
 set $terminal konsole
 
 # Set a font
-font pango:DejaVu Sans Mono 8
-
-
+font pango:Source Code Pro Medium 9
 
 # Turn off screen
-bindsym $mod+y exec  --no-startup-id sleep 1 && xset dpms force off
+#bindsym $mod+y exec  --no-startup-id sleep 1 && xset dpms force off
 
 # start a terminal
 bindsym $mod+Return exec  --no-startup-id $terminal
@@ -27,6 +25,9 @@ bindsym $mod+Shift+q kill
 
 # Pretty much an application search menu
 bindsym $mod+d exec --no-startup-id rofi -show drun
+
+# A calendar
+bindsym $mod+g exec --no-startup-id gsimplecal
 
 # Pretty much an application switcher
 bindsym Mod1+Tab exec --no-startup-id rofi -show window
@@ -128,7 +129,7 @@ bindsym XF86Calculator exec --no-startup-id $calculator
 bindsym XF86Mail exec --no-startup-id $mail
 
 # Screenshot
-bindsym Print exec scrot -m -e 'mv $f /home/mantas/Dropbox/Pictures/Screenshots/'
+bindsym Print exec scrot -m -e 'mv $f /home/mantas/Dropbox/Pictures/Screenshots/' && notify-send -i applets-screenshooter 'Screenshot taken'
 
 
 # reload the configuration file
@@ -170,11 +171,19 @@ mode "launch" {
 
 # System control mode
 mode "control" {
+	# Shutdown
 	bindsym s exec systemctl poweroff
 	# Lock the screen
-	bindsym l exec --no-startup-id i3lock-fancy -f Comic-Sans-MS ; mode "default"	
+	bindsym l exec --no-startup-id xautolock -locknow ; mode "default"
 	# Lock the screen and turn it off
-	bindsym Shift+l exec --no-startup-id i3lock-fancy -f Comic-Sans-MS && sleep 1 && xset dpms force off; mode "default"
+	bindsym Shift+l exec --no-startup-id xautolock -locknow && sleep 2 && xset dpms force off; mode "default"
+	# Suspend/Sleep
+	bindsym Shift+s exec --no-startup-id systemctl suspend; mode "default" 
+	# Hibernate
+	bindsym h exec --no-startup-id systemctl hibernate; mode "default"
+	# Hybrid Sleep
+	bindsym Shift+h exec --no-startup-id systemctl hybrid-sleep; mode "default"
+	# Exit aka logout
 	bindsym e exit 
 		
 
@@ -185,7 +194,12 @@ mode "control" {
 # Mode switch controls
 bindsym $mod+r mode "resize"
 bindsym $mod+q mode "launch"
-bindsym $mod+p mode "control"
+bindsym $mod+c mode "control"
+
+
+# Scratchpad
+bindsym $mod+KP_Subtract move scratchpad
+bindsym $mod+KP_Add scratchpad show
 
 ### Global configuration: ##
 
@@ -207,20 +221,39 @@ for_window [class=gwenview] floating enable
 for_window [class=Eog] floating enable
 for_window [class=feh] floating enable
 
+# Archiver floating
+for_window [class=File-roller] floating enable
+
+# Notes flaoting
+for_window [class=notes] floating enable
+for_window [class=notes] new_window normal
+
+# Calendar flaoting, sticky and larger
+for_window [class=Gsimplecal] floating enable
+for_window [class=Gsimplecal] sticky enable
+# This doesn't work
+#for_window [class=Gsimplecal] floating_minimum_size 300 x 200
+#for_window [class=Gsimplecal] floating_maximum_size -1 x -1
+
+# Workspace assigments
+assign [class="Feedreader"] 4
+assign [class="Thunderbird"] 5
+
 # The bar
 bar {
-	font pango:Dejavu Sans Mono 10
+	font pango:Source Code Pro Medium, FontAwesome 10
 
 	# Fancier colors
 	colors {
-		background #30363b
-      		statusline #eae9da
-      		separator  #eae9ada
+		background #0d0d0d
+      		statusline #33cc33
+      		separator  #ff9900
 
-      		focused_workspace  #30363b #30363b #4e9ab7
-      		active_workspace   #30363b #30363b #4e9ab7
-      		inactive_workspace #30363b #30363b #eae9da
-      		urgent_workspace   #9b6465 #30363b #eae9da
+      		focused_workspace  #30363b #30363b #ff9900
+      		active_workspace   #30363b #30363b #ff9900
+      		inactive_workspace #30363b #30363b #33cc33
+      		urgent_workspace   #9b6465 #30363b #dc0404
+		binding_mode       #9b6465 #30363b #dc0404
 	}
 
 	# Put the bar on the top
@@ -234,6 +267,10 @@ bar {
    	hidden_state hide
 	# Do not use a modifier key
     	modifier none
+	# Give it a bit of spacing
+	separator_symbol " | "
+	# Show a calendar	
+	bindsym button1 exec --no-startup-id gsimplecal
 }
 
 # Toggle hiding/showing
@@ -254,13 +291,13 @@ exec --no-startup-id redshift-gtk &
 # Background
 exec --no-startup-id feh --bg-scale  $HOME/Dropbox/Pictures/Backgrounds/wallpaper6.jpg &
 # Make sure numlock is on
-exec --no-startup-id /usr/bin/numlockx on &
-# Assosiate Xorg lock as our desired locker
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock-fancy -f Comic-Sans-MS &
+exec --no-startup-id /usr/bin/numlockx on & 
+# Setup Xorg autolock. It still can be locked manually with -locknow switch
+exec --no-startup-id xautolock -time 5 -detectsleep -locker i3lock-fancy  &
 # Turn off screensaver, otherwise i3lock-fancy picks up black screen. Manual locking required
-exec --no-startup-id xset s 0 0 &
+exec --no-startup-id xset s off &
 # For removable device mounting
-exec --no-startup-id udiskie --no-automount --no-notify --tray --use-udisks2 &
+exec --no-startup-id udiskie --no-automount --tray --use-udisks2 &
 # Hide the cursor, as we are in a tiling wm anyway, which is keyboard driven
 exec --no-startup-id unclutter --timeout 10 --jitter 50 --ignore-scrolling -b &
 
