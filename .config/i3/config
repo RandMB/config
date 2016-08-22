@@ -289,7 +289,7 @@ exec --no-startup-id nm-applet &
 # Redshift
 exec --no-startup-id redshift-gtk &
 # Background
-exec --no-startup-id feh --bg-scale  $HOME/Dropbox/Pictures/Backgrounds/wallpaper6.jpg &
+exec --no-startup-id feh --bg-scale  $HOME/Dropbox/Pictures/Backgrounds/Q91SdQh.jpg &
 # Make sure numlock is on
 exec --no-startup-id /usr/bin/numlockx on & 
 # Setup Xorg autolock. It still can be locked manually with -locknow switch
