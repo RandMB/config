@@ -1,0 +1,52 @@
+/*Put the Vivaldi button in the top left*/
+button.vivaldi{
+	/*Centered Vertically with the toolbar*/
+	padding-top:6px;
+	/*In front of the toolbar*/
+	z-index: 1;
+}
+/*Put the tabs where they go*/
+div#tabs-container.top{
+	/*Don't follow document flow.*/
+	position: absolute;
+	/*Go below the toolbar*/
+	top:28px;
+	/*In front of the toolbar (Because we make the toolbar provide the background later)*/
+	z-index: 1;
+	/*Position absolute means we have to re-declare this?*/
+	width: 100%;
+	/*Dont leave that extra space where the vivaldi button went*/
+	padding-left:0px !important;
+}
+/*The entire toolbar*/
+.toolbar.toolbar-addressbar.default.search{
+	/*Background for the tabs*/
+	margin-bottom:30px;
+	/*Dont leave extra space where the ... idk what it was, but its not there now, so just don't.*/
+	padding-right:0px;
+}
+/*Leave extra space for the vivaldi button*/
+button.button-toolbar.back{
+	margin-left:34px;
+}
+/*Don't leave extra space for... yet another mystery.*/
+.addressfield{
+	margin-left:4px;
+}
+/*When we can search from the address field, the search field becomes useless.*/
+.searchfield.iconmenu-container{
+	display:none;
+}
+/*I don't need that trash thingy. If you want it, remove this bit and it'll look fine.*/
+/*button.button-tabbar.toggle-trash{
+	display:none;
+}*/
+/*Make sure it's set to 'use parent window'. this removes the title bar.*/
+div#header{
+	min-height:0px !important;
+}
+
+#tabs-container.top{padding-top:0px !important;}
+#tabs-container.bottom{padding-bottom:0px !important;}
+
+/*If you want the title bar, remove that bit right there. you'll have to adjust the tabs vertical offset, but it should work fine.*/

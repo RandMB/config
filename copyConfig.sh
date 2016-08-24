@@ -12,4 +12,4 @@ cp -R $HOME/.config/qt5ct/ $HOME/Git/config/.config/
 cp -R $HOME/.config/mpv/ $HOME/Git/config/.config/
 cp $HOME/.gtkrc-2.0 $HOME/Git/config/
 cp $HOME/.zshrc $HOME/Git/config/
-
+cp /opt/vivaldi-snapshot/resources/vivaldi/style/custom.css $HOME/Git/config/vivaldi-custom.css

@@ -174,15 +174,15 @@ mode "control" {
 	# Shutdown
 	bindsym s exec systemctl poweroff
 	# Lock the screen
-	bindsym l exec --no-startup-id xautolock -locknow ; mode "default"
+	bindsym l exec --no-startup-id i3lock-fancy ; mode "default"
 	# Lock the screen and turn it off
-	bindsym Shift+l exec --no-startup-id xautolock -locknow && sleep 2 && xset dpms force off; mode "default"
+	bindsym Shift+l exec --no-startup-id i3lock-fancy && sleep 2 && xset dpms force off; mode "default"
 	# Suspend/Sleep
-	bindsym Shift+s exec --no-startup-id systemctl suspend; mode "default" 
+	bindsym Shift+s exec --no-startup-id i3lock-fancy && sleep 2 && systemctl suspend; mode "default" 
 	# Hibernate
-	bindsym h exec --no-startup-id systemctl hibernate; mode "default"
+	bindsym h exec --no-startup-id i3lock-fancy && sleep 2 && systemctl hibernate; mode "default"
 	# Hybrid Sleep
-	bindsym Shift+h exec --no-startup-id systemctl hybrid-sleep; mode "default"
+	bindsym Shift+h exec --no-startup-id i3lock-fancy && sleep 2 && systemctl hybrid-sleep; mode "default"
 	# Exit aka logout
 	bindsym e exit 
 		
@@ -293,7 +293,7 @@ exec --no-startup-id feh --bg-scale  $HOME/Dropbox/Pictures/Backgrounds/Q91SdQh.
 # Make sure numlock is on
 exec --no-startup-id /usr/bin/numlockx on & 
 # Setup Xorg autolock. It still can be locked manually with -locknow switch
-exec --no-startup-id xautolock -time 5 -detectsleep -locker i3lock-fancy  &
+#exec --no-startup-id xautolock -time 5 -detectsleep -locker i3lock-fancy  &
 # Turn off screensaver, otherwise i3lock-fancy picks up black screen. Manual locking required
 exec --no-startup-id xset s off &
 # For removable device mounting
