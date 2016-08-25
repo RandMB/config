@@ -1,18 +1,25 @@
 #! /bin/sh
 
-cp $HOME/.config/compton.conf $HOME/Git/config/.config/
-cp $HOME/.config/Trolltech.conf $HOME/Git/config/.config/
-cp $HOME/.config/mpd/mpd.conf $HOME/Git/config/.config/mpd
-cp $HOME/.config/ncmpcpp/config $HOME/Git/config/.config/ncmpcpp/
-#cp /usr/local/bin/touchpadToggle.sh $HOME/Git/config/
-cp -R $HOME/.config/i3/ $HOME/Git/config/.config/
-cp -R $HOME/.config/i3status/ $HOME/Git/config/.config/
-cp -R $HOME/.config/fontconfig/ $HOME/Git/config/.config/
-cp -R $HOME/.config/gtk-3.0/ $HOME/Git/config/.config/
-cp -R $HOME/.config/qt5ct/ $HOME/Git/config/.config/
-cp -R $HOME/.config/mpv/ $HOME/Git/config/.config/
-cp -R $HOME/.config/mpd/playlists/ $HOME/Git/config/.config/mpd/
-cp $HOME/.gtkrc-2.0 $HOME/Git/config/
-cp $HOME/.zshrc $HOME/Git/config/
-cp /opt/vivaldi-snapshot/resources/vivaldi/style/custom.css $HOME/Git/config/vivaldi-custom.css
-cp $HOME/Scripts/copyConfig.sh $HOME/Git/config/
+CONFIG_DIR="$HOME/.config";
+GIT_DIR="$HOME/Git/config";
+
+cp $CONFIG_DIR/compton.conf 	$GIT_DIR/.config/
+cp $CONFIG_DIR/Trolltech.conf 	$GIT_DIR/.config/
+cp $CONFIG_DIR/mpd/mpd.conf 	$GIT_DIR/.config/mpd
+cp $CONFIG_DIR/ncmpcpp/config 	$GIT_DIR/.config/ncmpcpp/
+cp $CONFIG_DIR/mpv/mpv.conf 	$GIT_DIR/.config/mpv/
+
+cp -R $CONFIG_DIR/i3/ 		$GIT_DIR/.config/
+cp -R $CONFIG_DIR/i3status/ 	$GIT_DIR/.config/
+cp -R $CONFIG_DIR/fontconfig/ 	$GIT_DIR/.config/
+cp -R $CONFIG_DIR/gtk-3.0/ 	$GIT_DIR/.config/
+cp -R $CONFIG_DIR/qt5ct/ 	$GIT_DIR/.config/
+cp -R $CONFIG_DIR/mpd/playlists/ $GIT_DIR/.config/mpd/
+
+cp $HOME/.gtkrc-2.0 	$GIT_DIR/
+cp $HOME/.zshrc 	$GIT_DIR/
+
+cp $HOME/Scripts/copyConfig.sh $GIT_DIR/
+
+cp /opt/vivaldi-snapshot/resources/vivaldi/style/custom.css $GIT_DIR/vivaldi-custom.css
+
