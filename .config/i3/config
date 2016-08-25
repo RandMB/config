@@ -277,7 +277,7 @@ bar {
 bindsym $mod+b bar hidden_state toggle
 
 ### Layout section ###
-exec --no-startup-id $HOME/Scripts/layout.sh &
+#exec --no-startup-id $HOME/Scripts/layout.sh &
 
 ### Auto start ##
 # The compositor
