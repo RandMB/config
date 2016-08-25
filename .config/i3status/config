@@ -16,15 +16,9 @@ general {
 	
 }
 
-order += "cpu_temperature 1"
 order += "battery 0"
 order += "volume master"
 order += "tztime local"
-
-cpu_temperature 1 {
-  format = "%degrees °C"
-  max_threshold = "70"
-}
 
 battery 0 {
         format = " %status %percentage %remaining"
