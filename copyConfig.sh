@@ -11,6 +11,7 @@ cp $CONFIG_DIR/mpv/mpv.conf 	$GIT_DIR/.config/mpv/
 
 cp -R $CONFIG_DIR/i3/ 		$GIT_DIR/.config/
 cp -R $CONFIG_DIR/i3status/ 	$GIT_DIR/.config/
+cp -R $CONFIG_DIR/i3blocks/ 	$GIT_DIR/.config/
 cp -R $CONFIG_DIR/fontconfig/ 	$GIT_DIR/.config/
 cp -R $CONFIG_DIR/gtk-3.0/ 	$GIT_DIR/.config/
 cp -R $CONFIG_DIR/qt5ct/ 	$GIT_DIR/.config/

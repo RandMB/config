@@ -26,3 +26,5 @@ song_columns_list_format 		= "(47)[15]{t|f} (30)[11]{a}   (6)[cyan]{lr}"
 song_list_format 			= "$(15)%t$R $(11)%A $(cyan)%l" 
 # No idea what this does
 autocenter_mode = "yes"
+progressbar_look = "◾◾-"
+discard_colors_if_item_is_selected = 	"yes"

@@ -110,9 +110,9 @@ bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
 
 # Volume controls
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 1 +5% 
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 1 -5% 
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 1 toggle 
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 1 +5% && pkill -RTMIN+1 i3blocks
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 1 -5% && pkill -RTMIN+1 i3blocks
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 1 toggle && pkill -RTMIN+1 i3blocks
 
 # Cmus control with multimedia keys
 bindsym XF86AudioPlay exec --no-startup-id mpc toggle
@@ -171,22 +171,25 @@ mode "launch" {
 
 # System control mode
 mode "control" {
+	# Turn on DPMS
+	bindsym d exec --no-startup-id xset +dpms && pkill -RTMIN+2 i3blocks; mode "default"
+	# Turn on DPMS
+	bindsym Shift+d exec --no-startup-id xset -dpms && pkill -RTMIN+2 i3blocks; mode "default"
 	# Shutdown
-	bindsym s exec systemctl poweroff
+	bindsym s exec mpc pause &&  systemctl poweroff
 	# Lock the screen
 	bindsym l exec --no-startup-id i3lock-fancy ; mode "default"
 	# Lock the screen and turn it off
 	bindsym Shift+l exec --no-startup-id i3lock-fancy && sleep 2 && xset dpms force off; mode "default"
 	# Suspend/Sleep
-	bindsym Shift+s exec --no-startup-id i3lock-fancy && sleep 2 && systemctl suspend; mode "default" 
+	bindsym Shift+s exec --no-startup-id i3lock-fancy && mpc pause && sleep 2 && systemctl suspend; mode "default" 
 	# Hibernate
-	bindsym h exec --no-startup-id i3lock-fancy && sleep 2 && systemctl hibernate; mode "default"
+	bindsym h exec --no-startup-id i3lock-fancy && mpc pause && sleep 2 && systemctl hibernate; mode "default"
 	# Hybrid Sleep
-	bindsym Shift+h exec --no-startup-id i3lock-fancy && sleep 2 && systemctl hybrid-sleep; mode "default"
+	bindsym Shift+h exec --no-startup-id i3lock-fancy && mpc pause && sleep 2 && systemctl hybrid-sleep; mode "default"
 	# Exit aka logout
-	bindsym e exit 
+	bindsym e exec --no-startup-id mpd --kill; exit 
 		
-
         bindsym Return mode "default"
         bindsym Escape mode "default"
 }
@@ -241,26 +244,25 @@ assign [class="Thunderbird"] 5
 
 # The bar
 bar {
-	font pango:Adobe Source Code Medium, FontAwesome 10
+	font pango:Droid Sans, pango:FontAwesome 11
 
 	# Fancier colors
 	colors {
 		background #0d0d0d
-      		statusline #33cc33
-      		separator  #ff9900
+      		statusline #cccccc
+      		separator  #999999
 
-      		focused_workspace  #30363b #30363b #ff9900
+      		focused_workspace  #30363b #30363b #00e600
       		active_workspace   #30363b #30363b #ff9900
-      		inactive_workspace #30363b #30363b #33cc33
+      		inactive_workspace #30363b #30363b #999999
       		urgent_workspace   #9b6465 #30363b #dc0404
 		binding_mode       #9b6465 #30363b #dc0404
 	}
 
 	# Put the bar on the top
 	position top
-	
 	# Didsplay default status
-        status_command i3status
+        status_command i3blocks -c $HOME/.config/i3blocks/config
 	# Use hide/show mode
 	mode hide
 	# Default to hiding
@@ -268,9 +270,9 @@ bar {
 	# Do not use a modifier key
     	modifier none
 	# Give it a bit of spacing
-	separator_symbol " | "
+	separator_symbol "|"
 	# Show a calendar	
-	bindsym button1 exec --no-startup-id gsimplecal
+	#bindsym button1 exec --no-startup-id gsimplecal
 }
 
 # Toggle hiding/showing
@@ -298,6 +300,7 @@ exec --no-startup-id xset s off &
 exec --no-startup-id udiskie --no-automount --tray --use-udisks2 &
 # Hide the cursor, as we are in a tiling wm anyway, which is keyboard driven
 exec --no-startup-id unclutter --timeout 10 --jitter 50 --ignore-scrolling -b &
-
+# Start the mpd
+exec --no-startup-id mpd &
 
 
