@@ -1,5 +1,5 @@
 # Path to your oh-my-zsh installation.
-  export ZSH=/home/mantas/.oh-my-zsh
+  export ZSH=$HOME/.oh-my-zsh
 
 setopt appendhistory autocd
 unsetopt beep nomatch
