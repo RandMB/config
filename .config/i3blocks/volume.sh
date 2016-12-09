@@ -1,24 +1,23 @@
 #! /bin/sh
 
-volume=`amixer get Master | tail -n 1 | cut -d ' ' -f 7,8`;
-level=` echo $volume | cut -d ' ' -f 1 | grep -E -o '[0-9]{1,3}'`;
-status=`echo $volume | cut -d ' ' -f 2 | grep -E -o '\w+'`;
+volume=`pamixer --get-volume`;
+mute=`pamixer --get-mute`;
 
 
-if [ $status == "on" ]; then
+if [ $mute == "false" -a $volume -gt 0 ]; then
 	color="#00e600";
 
-	if [ $level -ge 50 ]; then
+	if [ $volume -gt 50 ]; then
 		icon="";
 	else 
 		icon="";
 	fi
 
-elif [ $status == "off" ]; then
+else
 	color="#ffff00";
 	icon="";
 fi
 
-echo "$icon $level%";
-echo "$icon $level%";
+echo "$icon $volume%";
+echo "$icon $volume%";
 echo "$color";

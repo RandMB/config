@@ -86,3 +86,5 @@ export EDITOR='vim'
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+#
+alias dolphin="QT_QPA_PLATFORMTHEME=\"kde\" dolphin"

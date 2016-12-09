@@ -13,14 +13,6 @@ command=/usr/lib/i3blocks/$BLOCK_NAME
 markup=none
 
 # Temperature
-[email]
-full_text=
-command=/$HOME/.config/i3blocks/email.sh
-interval=120
-
-[separator]
-
-# Temperature
 [temperature]
 label=
 full_text=

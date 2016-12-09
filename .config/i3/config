@@ -3,16 +3,14 @@
 # Modifier is windows/super/meta/whatever key
 set $mod Mod4
 # Browser which is used the most
-set $browser vivaldi-snapshot --disk-cache-dir=/tmp/vivaldi-snapshot-cache
+set $browser vivaldi-snapshot --disk-cache-dir=/tmp/vivaldi-cache
 # Used calculator
-set $calculator gnome-calculator
-# Used Mail application
-set $mail thunderbird
+set $calculator kcalc
 # Terminal application
 set $terminal konsole
 
 # Set a font
-font pango:Source Code Pro  9
+font pango:Droid Sans Mono  9
 
 workspace_layout tabbed
 
@@ -118,9 +116,9 @@ workspace 5 output DP-1
 workspace 6 output eDP-1
 
 # Volume controls
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% && pkill -RTMIN+1 i3blocks
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% && pkill -RTMIN+1 i3blocks
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle && pkill -RTMIN+1 i3blocks
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 1 +5% && pkill -RTMIN+1 i3blocks
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 1 -5% && pkill -RTMIN+1 i3blocks
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 1 toggle && pkill -RTMIN+1 i3blocks
 
 # Cmus control with multimedia keys
 bindsym XF86AudioPlay exec --no-startup-id mpc toggle
@@ -132,12 +130,11 @@ bindsym XF86AudioPrev exec --no-startup-id mpc prev
 bindsym XF86TouchpadToggle exec --no-startup-id /usr/local/bin/touchpadToggle.sh
 
 # Miscellaneous laptop keys
-bindsym XF86WWW exec --no-startup-id  $browser --new-window
+bindsym XF86WWW exec --no-startup-id  $browser
 bindsym XF86Calculator exec --no-startup-id $calculator
-bindsym XF86Mail exec --no-startup-id $mail
 
 # Screenshot
-bindsym Print exec scrot -m -e 'mv $f /home/mantas/Dropbox/Pictures/Screenshots/  && notify-send -i applets-screenshooter "Screenshot taken $f"'
+bindsym Print exec scrot -m -e 'mv $f /home/mantas/Pictures/  && notify-send -i applets-screenshooter "Screenshot taken $f"'
 # reload the configuration file
 bindsym $mod+Shift+c reload
 
@@ -165,9 +162,9 @@ mode "resize" {
 # Application launch mode
 mode "launch" {
 	
-	bindsym w exec --no-startup-id $browser --new-window; mode "default"
+	bindsym w exec --no-startup-id $browser; mode "default"
 	bindsym c exec --no-startup-id $calculator; mode "default"
-	bindsym s exec --no-startup-id steam; mode "default"
+	bindsym s exec --no-startup-id steam-native; mode "default"
 	bindsym d exec --no-startup-id dropbox; mode "default"
 	# Kill that buggy shit. Yes, kill, no terms
 	bindsym Shift+d exec --no-startup-id killall -s SIGKILL dropbox; mode "default"
@@ -195,7 +192,7 @@ mode "control" {
 	# Hybrid Sleep
 	bindsym Shift+h exec --no-startup-id i3lock-fancy && mpc pause && sleep 2 && systemctl hybrid-sleep; mode "default"
 	# Exit aka logout
-	bindsym e exec --no-startup-id mpc pause && mpd --kill; exit 
+	bindsym e exec --no-startup-id mpc pause; exit 
 		
         bindsym Return mode "default"
         bindsym Escape mode "default"
@@ -224,37 +221,30 @@ hide_edge_borders both
 
 ### Window specific configurations: ###
 # Calculator sticky and floating, no use of tiling it
-for_window [instance=gnome-calculator] floating enable
-for_window [instance=gnome-calculator] sticky enable
+for_window [instance=kcalc] floating enable
+for_window [instance=kcalc] sticky enable
 # Picture viewers floating, useless on small screen otherwise
 for_window [class=gwenview] floating enable
 for_window [class=Eog] floating enable
 for_window [class=feh] floating enable
 
 # Archiver floating
-for_window [class=File-roller] floating enable
+for_window [class=ark] floating enable
 
 # Notes flaoting
-for_window [class=notes] floating enable
-for_window [class=notes] new_window normal
+for_window [class=Zim] floating enable
 
 # Calendar flaoting, sticky and larger
 for_window [class=Gsimplecal] floating enable
 for_window [class=Gsimplecal] sticky enable
-# This doesn't work
-#for_window [class=Gsimplecal] floating_minimum_size 300 x 200
-#for_window [class=Gsimplecal] floating_maximum_size -1 x -1
 
-
-# Workspace assigments
-assign [class="Feedreader"] 4
-assign [class="Thunderbird"] 5
-assign [class="Epiphany"] 6
-assign [class="QupZilla"] 6
+# Make browser dialog windows floating, except the main browser window
+for_window [class="Firefox"] floating enable
+for_window [class="Firefox" instance="Navigator"] floating disable
 
 # The bar
 bar {
-	font pango:Droid Sans, pango:FontAwesome 11
+	font pango:Droid Sans Mono, pango:FontAwesome 10
 
 	# Fancier colors
 	colors {
@@ -281,15 +271,10 @@ bar {
     	modifier none
 	# Give it a bit of spacing
 	separator_symbol "|"
-	# Show a calendar	
-	#bindsym button1 exec --no-startup-id gsimplecal
 }
 
 # Toggle hiding/showing
 bindsym $mod+b bar hidden_state toggle
-
-### Layout section ###
-#exec --no-startup-id $HOME/Scripts/layout.sh &
 
 ### Auto start ##
 # The compositor
@@ -299,7 +284,7 @@ exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 # Network icon in bar
 exec --no-startup-id nm-applet &
 # Redshift
-exec --no-startup-id redshift-gtk &
+exec --no-startup-id systemctl --user restart redshift.service &
 # Background
 exec --no-startup-id /bin/sh $HOME/.fehbg &
 # Make sure numlock is on
@@ -310,7 +295,3 @@ exec --no-startup-id xset s off &
 exec --no-startup-id udiskie --no-automount --tray --use-udisks2 &
 # Hide the cursor, as we are in a tiling wm anyway, which is keyboard driven
 exec --no-startup-id unclutter --timeout 10 --jitter 50 --ignore-scrolling -b &
-# Start the mpd
-exec --no-startup-id mpd &
-
-exec --no-startup-id xrandr --output DP-1 --left-of eDP-1 --primary &
