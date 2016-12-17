@@ -88,3 +88,21 @@ export EDITOR='vim'
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 #
 alias dolphin="QT_QPA_PLATFORMTHEME=\"kde\" dolphin"
+
+function countdown(){
+   date1=$((`date +%s` + $1));
+   while [ "$date1" -ge `date +%s` ]; do
+     echo -ne "$(date -u --date @$(($date1 - `date +%s`)) +%H:%M:%S)\r";
+     sleep 0.5
+   done
+   notify-send -t 30000 "Timer" "Timer for $1 finished";
+}
+
+function hotspot(){
+	nmcli dev wifi hotspot ssid mee password kurvabled
+}
+
+function myxrandr(){
+	xrandr  "$@"
+	~/.fehbg
+}

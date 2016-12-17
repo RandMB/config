@@ -29,6 +29,17 @@ bindsym $mod+g exec --no-startup-id gsimplecal
 # Pretty much an application switcher
 bindsym Mod1+Tab exec --no-startup-id rofi -show window
 
+set $KP_1 87
+set $KP_2 88
+set $KP_3 89
+set $KP_4 83
+set $KP_5 84
+set $KP_6 85
+set $KP_7 79
+set $KP_8 80
+set $KP_9 81
+set $KP_0 90
+
 # change focus
 bindsym $mod+j focus left
 bindsym $mod+k focus down
@@ -83,28 +94,28 @@ bindsym $mod+a focus parent
 bindsym $mod+z focus child
 
 # switch to workspace
-bindsym $mod+1 workspace 1
-bindsym $mod+2 workspace 2
-bindsym $mod+3 workspace 3
-bindsym $mod+4 workspace 4
-bindsym $mod+5 workspace 5
-bindsym $mod+6 workspace 6
-bindsym $mod+7 workspace 7
-bindsym $mod+8 workspace 8
-bindsym $mod+9 workspace 9
-bindsym $mod+0 workspace 10
+bindcode $mod+$KP_1  workspace 1
+bindcode $mod+$KP_2  workspace 2
+bindcode $mod+$KP_3  workspace 3
+bindcode $mod+$KP_4  workspace 4
+bindcode $mod+$KP_5  workspace 5
+bindcode $mod+$KP_6  workspace 6
+bindcode $mod+$KP_7  workspace 7
+bindcode $mod+$KP_8  workspace 8
+bindcode $mod+$KP_9  workspace 9
+bindcode $mod+$KP_0  workspace 10
 
 # move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace 1
-bindsym $mod+Shift+2 move container to workspace 2
-bindsym $mod+Shift+3 move container to workspace 3
-bindsym $mod+Shift+4 move container to workspace 4
-bindsym $mod+Shift+5 move container to workspace 5
-bindsym $mod+Shift+6 move container to workspace 6
-bindsym $mod+Shift+7 move container to workspace 7
-bindsym $mod+Shift+8 move container to workspace 8
-bindsym $mod+Shift+9 move container to workspace 9
-bindsym $mod+Shift+0 move container to workspace 10
+bindcode $mod+Shift+$KP_1 move container to workspace 1
+bindcode $mod+Shift+$KP_2 move container to workspace 2
+bindcode $mod+Shift+$KP_3 move container to workspace 3
+bindcode $mod+Shift+$KP_4 move container to workspace 4
+bindcode $mod+Shift+$KP_5 move container to workspace 5
+bindcode $mod+Shift+$KP_6 move container to workspace 6
+bindcode $mod+Shift+$KP_7 move container to workspace 7
+bindcode $mod+Shift+$KP_8 move container to workspace 8
+bindcode $mod+Shift+$KP_9 move container to workspace 9
+bindcode $mod+Shift+$KP_0 move container to workspace 0
 
 
 # Workspaces
@@ -180,7 +191,7 @@ mode "control" {
 	# Turn on DPMS
 	bindsym Shift+d exec --no-startup-id xset -dpms && pkill -RTMIN+2 i3blocks; mode "default"
 	# Shutdown
-	bindsym s exec mpc pause &&  systemctl poweroff
+	bindsym s exec systemctl poweroff
 	# Lock the screen
 	bindsym l exec --no-startup-id i3lock-fancy ; mode "default"
 	# Lock the screen and turn it off
@@ -192,7 +203,7 @@ mode "control" {
 	# Hybrid Sleep
 	bindsym Shift+h exec --no-startup-id i3lock-fancy && mpc pause && sleep 2 && systemctl hybrid-sleep; mode "default"
 	# Exit aka logout
-	bindsym e exec --no-startup-id mpc pause; exit 
+	bindsym e exit 
 		
         bindsym Return mode "default"
         bindsym Escape mode "default"
@@ -276,6 +287,7 @@ bar {
 # Toggle hiding/showing
 bindsym $mod+b bar hidden_state toggle
 
+
 ### Auto start ##
 # The compositor
 exec --no-startup-id compton -b &
@@ -283,7 +295,7 @@ exec --no-startup-id compton -b &
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 # Network icon in bar
 exec --no-startup-id nm-applet &
-# Redshift
+# Redshift, needs restarting because of bugs
 exec --no-startup-id systemctl --user restart redshift.service &
 # Background
 exec --no-startup-id /bin/sh $HOME/.fehbg &
@@ -295,3 +307,7 @@ exec --no-startup-id xset s off &
 exec --no-startup-id udiskie --no-automount --tray --use-udisks2 &
 # Hide the cursor, as we are in a tiling wm anyway, which is keyboard driven
 exec --no-startup-id unclutter --timeout 10 --jitter 50 --ignore-scrolling -b &
+# MPD
+exec --no-startup-id mpd &
+# Keyboard layout
+#exec --no-startup-id my-kblayout us &
